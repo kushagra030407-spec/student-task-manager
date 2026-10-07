@@ -1,0 +1,25 @@
+{% extends "tasks/base.html" %}
+{% block title %}{{ page_title }} · Student Task Manager{% endblock %}
+{% block content %}
+<div class="form-wrap">
+  <a class="back-link" href="{% url 'tasks:dashboard' %}">← Back to dashboard</a>
+  <section class="form-card">
+    <p class="eyebrow">TASK DETAILS</p>
+    <h1>{{ page_title }}</h1>
+    <p class="muted">Break your work into manageable steps.</p>
+    <form method="post" class="task-form">
+      {% csrf_token %}
+      {% for field in form %}
+        <div class="field">
+          <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+          {{ field }}
+          {% if field.help_text %}<small>{{ field.help_text }}</small>{% endif %}
+          {% for error in field.errors %}<small class="error">{{ error }}</small>{% endfor %}
+        </div>
+      {% endfor %}
+      {% if form.non_field_errors %}<div class="error">{{ form.non_field_errors }}</div>{% endif %}
+      <div class="form-actions"><a class="button secondary" href="{% url 'tasks:dashboard' %}">Cancel</a><button class="button primary" type="submit">{{ button_label }}</button></div>
+    </form>
+  </section>
+</div>
+{% endblock %}
